@@ -38,6 +38,7 @@ node *aloca();
 treeNode* alocaTreeNode(char *nome, char *cargo, int salario);
 void insereArvore(treeNode **root, char *nome, char *cargo, int salario);
 int comparaCargo(char *cargo1, char *cargo2);
+int validaCargo(char *cargo);
 
 int main(void)
 {
@@ -141,6 +142,17 @@ int vazia(node *PILHA)
     return PILHA->prox == NULL;
 }
 
+int validaCargo(char *cargo)
+{
+    char *hierarquia[] = {"CEO", "Presidente", "Diretor", "Gerente", "Supervisor", "Coordenador", "Analista", "Assistente", "Auxiliar", "Estagiario"};
+    for(int i = 0; i < 10; i++) {
+        if(strcmp(cargo, hierarquia[i]) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 node *aloca()
 {
     node *novo = (node *) malloc(sizeof(node));
@@ -150,8 +162,13 @@ node *aloca()
     } else {
         printf("Novo elemento:\n");
         printf("Nome: "); scanf("%s", novo->nome);
-        printf("Cargo (CEO, Presidente, Diretor, Gerente, Supervisor, Coordenador, Analista, Assistente, Auxiliar, Estagiario): ");
-        scanf("%s", novo->cargo);
+        do {
+            printf("Cargo (CEO, Presidente, Diretor, Gerente, Supervisor, Coordenador, Analista, Assistente, Auxiliar, Estagiario): ");
+            scanf("%s", novo->cargo);
+            if (!validaCargo(novo->cargo)) {
+                printf("Cargo invalido! Por favor, insira um cargo valido.\n");
+            }
+        } while (!validaCargo(novo->cargo));
         printf("Salario: "); scanf("%d", &novo->salario);
         return novo;
     }
